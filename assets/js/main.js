@@ -5,6 +5,8 @@
 (function () {
   'use strict';
 
+  const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   /* --------------------------------------------------
      1. NAVBAR SCROLL EFFECT
   -------------------------------------------------- */
@@ -50,7 +52,7 @@
      3. PARTICLE NETWORK CANVAS (hero only)
   -------------------------------------------------- */
   const canvas = document.getElementById('particles-canvas');
-  if (canvas) {
+  if (canvas && !REDUCED_MOTION) {
     const ctx = canvas.getContext('2d');
     const isMobile = window.innerWidth <= 768;
     const PARTICLE_COUNT = isMobile ? 40 : 80;
@@ -173,93 +175,57 @@
   const revealElements = document.querySelectorAll('.reveal');
 
   if (revealElements.length > 0) {
-    const revealObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-          revealObserver.unobserve(entry.target);
-        }
+    if (REDUCED_MOTION) {
+      revealElements.forEach(function (el) {
+        el.classList.add('in-view');
       });
-    }, {
-      threshold: 0.12,
-      rootMargin: '0px 0px -40px 0px'
-    });
+    } else {
+      const revealObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.12,
+        rootMargin: '0px 0px -40px 0px'
+      });
 
-    revealElements.forEach(function (el) {
-      revealObserver.observe(el);
-    });
+      revealElements.forEach(function (el) {
+        revealObserver.observe(el);
+      });
+    }
   }
 
   /* --------------------------------------------------
      5. 3D CARD TILT
   -------------------------------------------------- */
-  const tiltCards = document.querySelectorAll('.tilt-card');
+  if (!REDUCED_MOTION) {
+    const tiltCards = document.querySelectorAll('.tilt-card');
 
-  tiltCards.forEach(function (card) {
-    card.addEventListener('mousemove', function (e) {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      const rotateX = (y - centerY) / 10;
-      const rotateY = (centerX - x) / 10;
-      card.style.transition = 'transform 0.1s ease';
-      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-    });
-
-    card.addEventListener('mouseleave', function () {
-      card.style.transition = 'transform 0.5s ease';
-      card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
-    });
-  });
-
-  /* --------------------------------------------------
-     6. ANIMATED COUNTERS
-  -------------------------------------------------- */
-  const counters = document.querySelectorAll('.counter');
-
-  if (counters.length > 0) {
-    function easeOut(t) {
-      return 1 - Math.pow(1 - t, 3);
-    }
-
-    function animateCounter(el) {
-      const target = parseInt(el.getAttribute('data-target'), 10);
-      const duration = 2000;
-      const startTime = performance.now();
-
-      function update(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const value = Math.round(easeOut(progress) * target);
-        el.textContent = value;
-        if (progress < 1) {
-          requestAnimationFrame(update);
-        } else {
-          el.textContent = target;
-        }
-      }
-
-      requestAnimationFrame(update);
-    }
-
-    const counterObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          animateCounter(entry.target);
-          counterObserver.unobserve(entry.target);
-        }
+    tiltCards.forEach(function (card) {
+      card.addEventListener('mousemove', function (e) {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = (y - centerY) / 10;
+        const rotateY = (centerX - x) / 10;
+        card.style.transition = 'transform 0.1s ease';
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
       });
-    }, { threshold: 0.5 });
 
-    counters.forEach(function (counter) {
-      counterObserver.observe(counter);
+      card.addEventListener('mouseleave', function () {
+        card.style.transition = 'transform 0.5s ease';
+        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+      });
     });
   }
 
   /* --------------------------------------------------
-     7. FAQ ACCORDION
+     6. FAQ ACCORDION
   -------------------------------------------------- */
   const faqItems = document.querySelectorAll('.faq-item');
 
@@ -288,7 +254,7 @@
   });
 
   /* --------------------------------------------------
-     8. BUTTON RIPPLE EFFECT
+     7. BUTTON RIPPLE EFFECT
   -------------------------------------------------- */
   const buttons = document.querySelectorAll('.btn');
 
@@ -312,14 +278,10 @@
   });
 
   /* --------------------------------------------------
-     9. MARQUEE TICKER (ensure seamless loop)
+     8. MARQUEE TICKER (pause on hover for accessibility)
   -------------------------------------------------- */
-  // The marquee animation is CSS-driven via marquee-track.
-  // JS ensures content is duplicated if not already done in HTML.
   const marqueeTrack = document.getElementById('marquee-track');
   if (marqueeTrack) {
-    // Content is already duplicated in HTML for seamless loop.
-    // Pause on hover for accessibility
     marqueeTrack.parentElement.addEventListener('mouseenter', function () {
       marqueeTrack.style.animationPlayState = 'paused';
     });
@@ -329,7 +291,7 @@
   }
 
   /* --------------------------------------------------
-     10. NAVBAR ACTIVE LINK (based on current URL)
+     9. NAVBAR ACTIVE LINK (based on current URL)
   -------------------------------------------------- */
   const navLinks = document.querySelectorAll('.navbar-links a, .mobile-menu a');
   const currentPath = window.location.pathname.split('/').pop() || 'index.html';
@@ -344,47 +306,76 @@
   });
 
   /* --------------------------------------------------
-     11. PROCESS TIMELINE DRAW ANIMATION
+     10. PROCESS / HOW-IT-WORKS TIMELINE DRAW ANIMATION
   -------------------------------------------------- */
   const timelineLine = document.getElementById('timeline-line');
   const processTimeline = document.getElementById('process-timeline');
 
   if (timelineLine && processTimeline) {
-    const timelineObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          timelineLine.classList.add('drawn');
-          timelineObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
+    if (REDUCED_MOTION) {
+      timelineLine.classList.add('drawn');
+    } else {
+      const timelineObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            timelineLine.classList.add('drawn');
+            timelineObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
 
-    timelineObserver.observe(processTimeline);
+      timelineObserver.observe(processTimeline);
+    }
   }
 
   /* --------------------------------------------------
-     12. FORM SUBMISSION
+     11. QUOTE / CONTACT FORM — WhatsApp compose
   -------------------------------------------------- */
-  const contactForm = document.getElementById('contact-form');
-  const submitBtn = document.getElementById('submit-btn');
-  const formSuccess = document.getElementById('form-success');
+  const quoteForms = document.querySelectorAll('.quote-form');
 
-  if (contactForm && submitBtn && formSuccess) {
-    contactForm.addEventListener('submit', function (e) {
+  quoteForms.forEach(function (form) {
+    form.addEventListener('submit', function (e) {
       e.preventDefault();
 
-      submitBtn.classList.add('loading');
-      submitBtn.textContent = 'Sending...';
+      const nameField = form.querySelector('[name="name"]');
+      const phoneField = form.querySelector('[name="phone"]');
+      const goodsField = form.querySelector('[name="goods"]');
+      const borderField = form.querySelector('[name="border"]');
+      const serviceField = form.querySelector('[name="service"]');
+      const note = form.querySelector('.form-note');
 
-      // Simulate async submission
-      setTimeout(function () {
-        contactForm.style.display = 'none';
-        formSuccess.classList.add('visible');
-        submitBtn.classList.remove('loading');
-        submitBtn.textContent = 'Send My Request';
-      }, 1500);
+      const name = nameField ? nameField.value.trim() : '';
+      const phone = phoneField ? phoneField.value.trim() : '';
+      const goods = goodsField ? goodsField.value.trim() : '';
+      const border = borderField ? borderField.value : '';
+      const service = serviceField ? serviceField.value : '';
+
+      if (!name || !phone || !goods) {
+        if (note) {
+          note.textContent = 'Please fill in your name, phone number, and what you’re clearing.';
+          note.classList.add('visible');
+        }
+        return;
+      }
+
+      let msg = `New quote request — website
+Name: ${name}
+Phone: ${phone}
+Clearing: ${goods}
+Border: ${border || 'Not sure'}`;
+
+      if (service) {
+        msg += `\nService: ${service}`;
+      }
+
+      window.open('https://wa.me/260955872277?text=' + encodeURIComponent(msg), '_blank');
+
+      if (note) {
+        note.innerHTML = 'Opening WhatsApp… If nothing opened, message us directly on <a href="https://wa.me/260955872277" target="_blank" rel="noopener">+260 955 872 277</a> or email <a href="mailto:info@firstprotocol.com">info@firstprotocol.com</a>.';
+        note.classList.add('visible');
+      }
     });
-  }
+  });
 
   /* --------------------------------------------------
      SECTION HEADING ACCENT LINES (scaleY trigger)
@@ -392,18 +383,24 @@
   const headingWraps = document.querySelectorAll('.section-heading-wrap');
 
   if (headingWraps.length > 0) {
-    const headingObserver = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-          headingObserver.unobserve(entry.target);
-        }
+    if (REDUCED_MOTION) {
+      headingWraps.forEach(function (wrap) {
+        wrap.classList.add('in-view');
       });
-    }, { threshold: 0.3 });
+    } else {
+      const headingObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-view');
+            headingObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
 
-    headingWraps.forEach(function (wrap) {
-      headingObserver.observe(wrap);
-    });
+      headingWraps.forEach(function (wrap) {
+        headingObserver.observe(wrap);
+      });
+    }
   }
 
   /* --------------------------------------------------
@@ -418,6 +415,45 @@
         scrollIndicator.classList.remove('hidden');
       }
     }, { passive: true });
+  }
+
+  /* --------------------------------------------------
+     HELP BOT ("Quick Answers")
+  -------------------------------------------------- */
+  const helpbotToggle = document.getElementById('helpbot-toggle');
+  const helpbotPanel = document.getElementById('helpbot-panel');
+
+  if (helpbotToggle && helpbotPanel) {
+    const questionList = helpbotPanel.querySelector('.helpbot-question-list');
+    const answers = helpbotPanel.querySelectorAll('.helpbot-answer');
+    const backBtns = helpbotPanel.querySelectorAll('.helpbot-back');
+
+    helpbotToggle.addEventListener('click', function () {
+      helpbotPanel.classList.toggle('open');
+    });
+
+    helpbotPanel.querySelectorAll('.helpbot-q-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const targetId = btn.getAttribute('data-answer');
+        const target = helpbotPanel.querySelector('#' + targetId);
+        if (questionList) questionList.style.display = 'none';
+        answers.forEach(function (a) { a.classList.remove('active'); });
+        if (target) target.classList.add('active');
+      });
+    });
+
+    backBtns.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        answers.forEach(function (a) { a.classList.remove('active'); });
+        if (questionList) questionList.style.display = 'flex';
+      });
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!helpbotPanel.contains(e.target) && !helpbotToggle.contains(e.target)) {
+        helpbotPanel.classList.remove('open');
+      }
+    });
   }
 
 })();

@@ -1,0 +1,5 @@
+{
+  "redirects": [
+    { "source": "/process.html", "destination": "/#how-it-works", "permanent": true }
+  ]
+}
