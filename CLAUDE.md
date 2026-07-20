@@ -146,6 +146,7 @@ first-protocol/
 | `border-chirundu-2.webp` | 355×142 | SMALL — card thumbnails only |
 | `border-nakonde.webp` | 259×194 | SMALL — card thumbnails only |
 | `cargo-truck-2.webp` | 410×123 | SMALL — card thumbnails only |
+| `personal-vehicle.jpg` | 735×523 | services.html `#vehicles` section image |
 
 **Image rules:**
 - Never place an image in a slot rendered wider than its pixel width. Files marked SMALL never appear in heroes or half-column section images.
