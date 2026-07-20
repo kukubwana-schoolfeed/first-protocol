@@ -140,13 +140,13 @@ ul {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 24px;
+  padding: 10px 24px;
   max-width: var(--max-width);
   margin: 0 auto;
 }
 
 .navbar-logo img {
-  height: 50px;
+  height: 70px;
   width: auto;
 }
 
@@ -466,14 +466,6 @@ ul {
   z-index: 1;
 }
 
-#particles-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-}
-
 .hero-content {
   position: relative;
   z-index: 3;
@@ -549,7 +541,7 @@ ul {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  padding-top: 80px;
+  padding-top: 90px;
 }
 
 .page-hero-bg {
@@ -2031,7 +2023,7 @@ ul {
 }
 
 .footer-brand img {
-  height: 60px;
+  height: 84px;
   margin-bottom: 20px;
 }
 
@@ -2435,10 +2427,6 @@ ul {
     animation: none;
   }
 
-  #particles-canvas {
-    display: none;
-  }
-
   .tilt-card:hover,
   .tilt-card {
     transform: none !important;
@@ -2486,6 +2474,14 @@ ul {
   .navbar-links,
   .btn-nav {
     display: none;
+  }
+
+  .navbar-inner {
+    padding: 8px 20px;
+  }
+
+  .navbar-logo img {
+    height: 56px;
   }
 
   .hamburger {
