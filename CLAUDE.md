@@ -16,7 +16,7 @@ The prime goals: **one continuous conversion journey on the homepage** (a visito
 |---|---|
 | Company | First Protocol Logistics |
 | Phone / WhatsApp | **+260 955 872 277** → `tel:+260955872277` and `https://wa.me/260955872277` |
-| Email | **info@firstprotocol.com** — the old `info@firstprotocol.co.zm` is WRONG; replace everywhere, including `<meta>` tags |
+| Email | **clear@firstprotocollogistics.com** — the old `info@firstprotocol.com` (and older `info@firstprotocol.co.zm`) is WRONG; replace everywhere, including `<meta>` tags |
 | Office (the only one) | 128 Kitwe Road, Silverest Gardens |
 | Directions line | "Turn right into Kitwe Road — last house on your right." |
 | Hours | Mon–Fri 08:00–17:00 · Sat 08:00–13:00 CAT |
@@ -50,7 +50,7 @@ https://www.google.com/maps/dir/?api=1&destination=-15.377421,28.472965
 - The 24/7 emergency hotline / "Stuck at the border?" box
 - "We respond within 2 hours" (any response-time promise)
 - Placeholder phone numbers (`+260-XXX-XXXXXX`, `wa.me/260XXXXXXXXX`)
-- `info@firstprotocol.co.zm`
+- `info@firstprotocol.co.zm` and `info@firstprotocol.com` (both superseded by the current ground-truth email)
 - "Real-Time Tracking" as a system/feature claim (see Ground Truth for honest wording)
 - "Dedicated Account Managers"
 - Team placeholder cards ("Profiles coming soon")

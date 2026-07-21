@@ -250,7 +250,7 @@ Border: ${border || 'Not sure'}`;
       window.open('https://wa.me/260955872277?text=' + encodeURIComponent(msg), '_blank');
 
       if (note) {
-        note.innerHTML = 'Opening WhatsApp… If nothing opened, message us directly on <a href="https://wa.me/260955872277" target="_blank" rel="noopener">+260 955 872 277</a> or email <a href="mailto:info@firstprotocol.com">info@firstprotocol.com</a>.';
+        note.innerHTML = 'Opening WhatsApp… If nothing opened, message us directly on <a href="https://wa.me/260955872277" target="_blank" rel="noopener">+260 955 872 277</a> or email <a href="mailto:clear@firstprotocollogistics.com">clear@firstprotocollogistics.com</a>.';
         note.classList.add('visible');
       }
     });
