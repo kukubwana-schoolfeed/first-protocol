@@ -1222,6 +1222,57 @@ ul {
   letter-spacing: 0.5px;
 }
 
+/* Credentials & Registration */
+.credentials-section {
+  background: var(--black-2);
+}
+
+.credentials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.credential-card {
+  background: var(--black-3);
+  border-radius: var(--border-radius-lg);
+  padding: 32px 28px;
+  text-align: center;
+  border-top: 3px solid var(--green);
+  will-change: transform;
+  transition: transform 0.1s ease;
+}
+
+.credential-card:nth-child(even) {
+  border-top-color: var(--orange);
+}
+
+.credential-card h3 {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 17px;
+  color: var(--white);
+  margin-bottom: 10px;
+}
+
+.credential-card .credential-number {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+  margin-bottom: 18px;
+}
+
+.credential-card .credential-number span {
+  color: var(--orange-light);
+}
+
+.credential-card .btn {
+  font-size: 12px;
+  padding: 11px 24px;
+}
+
 /* =============================================
    SERVICES PAGE
    ============================================= */
@@ -2138,6 +2189,16 @@ ul {
   color: var(--white);
 }
 
+.footer-registration {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  font-size: 11px;
+  font-weight: 300;
+  color: var(--muted-dark);
+  letter-spacing: 0.3px;
+}
+
 /* =============================================
    WHATSAPP FLOAT
    ============================================= */
@@ -2469,6 +2530,7 @@ ul {
   .section-title { font-size: 36px; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .values-grid { grid-template-columns: repeat(2, 1fr); }
+  .credentials-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 768px) {
